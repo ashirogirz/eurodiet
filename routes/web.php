@@ -30,4 +30,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         });
         $router->get('profile', 'AuthController@profile');
     });
+    $router->get('repository', 'AuthController@repository');
 });

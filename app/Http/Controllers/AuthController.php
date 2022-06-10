@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\User;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -96,6 +97,31 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Get Profile Success',
                 'data' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Get Profile Failed',
+                'data' => $e->getMessage()
+            ], 400);
+        }
+    }
+    public function repository()
+    {
+        try {
+            $client = new Client();
+
+            $response = $client->get('https://api.github.com/repos/ashirogirz/eurodiet', [
+                'headers' => [
+                    'Accept' => 'application/vnd.github.v3+json',
+                    'Authorization' => 'token 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',
+                ]
+            ]);
+            $res = json_decode($response->getBody());
+            return response()->json([
+                'success' => true,
+                'message' => 'Get Repository Script Success',
+                'data' => $res
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
